@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
 public class OfficeScheduler {
 
     @Async
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 500000)
     void sendIfo() throws NoSuchAlgorithmException, IOException {
         System.out.println("запрос");
         URL url = new URL("http://localhost:8083/api/workload/2134");

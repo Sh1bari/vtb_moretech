@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 public class Test {
@@ -17,11 +17,6 @@ public class Test {
     private final DepartmentWorkloadService departmentWorkloadService;
     private final OfficeRepo officeRepo;
 
-    @PostMapping("/workload/{id}")
-    private void saveWorkLoad(@PathVariable String id, @RequestBody DepartmentWorkloadRequest departmentWorkload){
-        System.out.println("прием");
-        departmentWorkloadService.saveWorkload(departmentWorkload, Long.parseLong(id));
-    }
     @GetMapping("/getAll")
     private List<TestDto> a(){
         List<TestDto> req = new ArrayList<>();
