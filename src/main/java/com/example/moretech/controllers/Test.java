@@ -21,8 +21,8 @@ public class Test {
     private final DepartmentWorkloadService departmentWorkloadService;
     private final OfficeRepo officeRepo;
     private final AtmRepo atmRepo;
-    @GetMapping("/getAll")
-    private List<TestDto> a() {
+    @GetMapping("/getAllOffices")
+    private List<TestDto> of(){
         List<TestDto> req = new ArrayList<>();
         for (var o : officeRepo.findAll()) {
             req.add(TestDto.builder()
@@ -32,12 +32,30 @@ public class Test {
                     .departmentType(DepartmentEnum.OFFICE)
                     .build());
         }
+        return req;
+    }
+    @GetMapping("/getAllAtms")
+    private List<TestDto> atm(){
+        List<TestDto> req = new ArrayList<>();
         for (var o : atmRepo.findAll()) {
             req.add(TestDto.builder()
                     .id(o.getId())
                     .latitude(o.getLatitude())
                     .longitude(o.getLongitude())
                     .departmentType(DepartmentEnum.ATM)
+                    .build());
+        }
+        return req;
+    }
+    @GetMapping("/getAll")
+    private List<TestDto> a() {
+        List<TestDto> req = new ArrayList<>();
+        for (var o : officeRepo.findAll()) {
+            req.add(TestDto.builder()
+                    .id(o.getId())
+                    .latitude(o.getLatitude())
+                    .longitude(o.getLongitude())
+                    .departmentType(DepartmentEnum.OFFICE)
                     .build());
         }
         return req;
