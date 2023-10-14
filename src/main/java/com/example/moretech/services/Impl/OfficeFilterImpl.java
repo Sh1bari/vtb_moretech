@@ -12,6 +12,11 @@ import java.util.Optional;
 public class OfficeFilterImpl implements OfficeFilter {
     @Override
     public List<Office> filter(List<Office> offices, String hour, String hasRamp, Boolean isIndividual) {
+        if (hour == null) {
+            hour = String.valueOf(LocalTime.now().getHour());
+        }
+
+        String finalHour = hour;
         if (isIndividual) {
             return offices.parallelStream()
                     .filter(office -> {
@@ -21,7 +26,8 @@ public class OfficeFilterImpl implements OfficeFilter {
                                     .findFirst();
 
                             if (hours.isPresent()) {
-                                return isTimeInRange(hours.get().getHours(), LocalTime.now());
+                                return isTimeInRange(hours.get().getHours(),
+                                        LocalTime.of(Integer.parseInt(finalHour), 0));
                             }
                         }
                         return false;
@@ -35,7 +41,8 @@ public class OfficeFilterImpl implements OfficeFilter {
                                     .findFirst();
 
                             if (hours.isPresent()) {
-                                return isTimeInRange(hours.get().getHours(), LocalTime.now());
+                                return isTimeInRange(hours.get().getHours(),
+                                        LocalTime.of(Integer.parseInt(finalHour), 0));
                             }
                         }
                         return false;
