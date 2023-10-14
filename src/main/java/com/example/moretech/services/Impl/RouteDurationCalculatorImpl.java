@@ -6,6 +6,7 @@ import com.example.moretech.models.enums.TransportType;
 import com.example.moretech.services.RouteDurationCalculator;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,11 +15,13 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class RouteDurationCalculatorImpl implements RouteDurationCalculator {
 
+    @Value("${geoapify-key}")
+    private String GEOAPIFY_KEY;
     private static final String URI_TEMPLATE =
-            "http://router.project-osrm.org/route/v1/{type}/{startLon},{startLat};{endLon},{endLat}";
+            "https://api.geoapify.com/v1/routing?waypoints={startLat},{startLon}|{endLat},{endLon}&mode={type}&apiKey={key}";
 
     /**
-     * @throws RouteCalculationException если возникла ошибка на стороне сервиса osrm.org или
+     * @throws RouteCalculationException если возникла ошибка на стороне сервиса geoapify или
      * маршрут не может быть найден.
      */
     @Override
@@ -27,10 +30,10 @@ public class RouteDurationCalculatorImpl implements RouteDurationCalculator {
         RestTemplate restTemplate = new RestTemplate();
         try {
             JsonNode response = restTemplate.getForObject(URI_TEMPLATE, JsonNode.class,
-                    type,
-                    start.getLongitude(), start.getLatitude(),
-                    end.getLongitude(), end.getLatitude());
-            return response.get("routes").get(0).get("duration").asDouble();
+                    start.getLatitude(), start.getLongitude(),
+                    end.getLatitude(), end.getLongitude(),
+                    type.toString().toLowerCase(), GEOAPIFY_KEY);
+            return response.get("features").get(0).get("properties").get("time").asDouble();
         } catch (RuntimeException e) {
             throw new RouteCalculationException("Route from " + start + " to " + end + " can't be found.");
         }
