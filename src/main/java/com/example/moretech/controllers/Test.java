@@ -3,6 +3,8 @@ package com.example.moretech.controllers;
 import com.example.moretech.models.DTO.TestDto;
 import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.entities.OpenHours;
+import com.example.moretech.models.enums.DepartmentEnum;
+import com.example.moretech.repo.AtmRepo;
 import com.example.moretech.repo.OfficeRepo;
 import com.example.moretech.repo.OpenHoursRepo;
 import com.example.moretech.services.DepartmentWorkloadService;
@@ -19,7 +21,7 @@ public class Test {
     private final DepartmentWorkloadService departmentWorkloadService;
     private final OfficeRepo officeRepo;
 
-    @GetMapping("/getAll")
+    @GetMapping("/getAllOffices")
     private List<TestDto> a() {
         List<TestDto> req = new ArrayList<>();
         for (var o : officeRepo.findAll()) {
@@ -27,6 +29,21 @@ public class Test {
                     .id(o.getId())
                     .latitude(o.getLatitude())
                     .longitude(o.getLongitude())
+                    .departmentType(DepartmentEnum.OFFICE)
+                    .build());
+        }
+        return req;
+    }
+    private final AtmRepo atmRepo;
+    @GetMapping("/getAllAtms")
+    private List<TestDto> b() {
+        List<TestDto> req = new ArrayList<>();
+        for (var o : atmRepo.findAll()) {
+            req.add(TestDto.builder()
+                    .id(o.getId())
+                    .latitude(o.getLatitude())
+                    .longitude(o.getLongitude())
+                    .departmentType(DepartmentEnum.ATM)
                     .build());
         }
         return req;
