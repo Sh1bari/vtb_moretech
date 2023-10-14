@@ -1,7 +1,9 @@
 package com.example.moretech.controllers;
 
+import com.example.moretech.models.entities.Atm;
 import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.entities.OpenHours;
+import com.example.moretech.repo.AtmRepo;
 import com.example.moretech.repo.OfficeRepo;
 import com.example.moretech.repo.OpenHoursRepo;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +18,10 @@ import java.util.List;
 public class Controller {
     private final OfficeRepo officeRepo;
     private final OpenHoursRepo openHoursRepo;
+    private final AtmRepo atmRepo;
 
     @PostMapping("/initDBOffice")
-    private void init(@RequestBody List<Office> offices) {
+    private void initOffice(@RequestBody List<Office> offices) {
         for (Office office : offices) {
             officeRepo.save(office);
             for (OpenHours o : office.getOpenHours()) {
@@ -28,6 +31,10 @@ public class Controller {
                 subDays(office, o);
             }
         }
+    }
+    @PostMapping("/initDBAtm")
+    private void initAtm(@RequestBody List<Atm> Atms) {
+        atmRepo.saveAll(Atms);
     }
 
     private void subDays(Office office, OpenHours o) {

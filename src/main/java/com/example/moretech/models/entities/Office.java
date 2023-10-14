@@ -20,10 +20,10 @@ public class Office {
     private String salePointFormat;
     private String suoAvailability;
     private String hasRamp;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     private String metroStation;
-    private int distance;
+    private Integer distance;
 
     @OneToMany(mappedBy = "office", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<OpenHours> openHours;
