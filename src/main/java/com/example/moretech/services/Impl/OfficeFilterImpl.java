@@ -15,7 +15,7 @@ public class OfficeFilterImpl implements OfficeFilter {
         if (isIndividual) {
             return offices.parallelStream()
                     .filter(office -> {
-                        if (office.getHasRamp().equals(hasRamp)) {
+                        if (hasRamp.equals(office.getHasRamp())) {
                             Optional<OpenHours> hours = office.getOpenHoursIndividual().stream()
                                     .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
                                     .findFirst();
@@ -29,7 +29,7 @@ public class OfficeFilterImpl implements OfficeFilter {
         } else {
             return offices.parallelStream()
                     .filter(office -> {
-                        if (office.getHasRamp().equals(hasRamp)) {
+                        if (hasRamp.equals(office.getHasRamp())) {
                             Optional<OpenHours> hours = office.getOpenHours().stream()
                                     .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
                                     .findFirst();
