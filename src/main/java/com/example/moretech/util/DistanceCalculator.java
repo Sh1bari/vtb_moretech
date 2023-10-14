@@ -4,10 +4,11 @@ public class DistanceCalculator {
     private static final double EARTH_RADIUS = 6371;
 
     /**
-     * @return расстояние в метрах.
+     * @return расстояние в метрах
      */
     public static double calculateDistance(double longitude1, double latitude1,
                                            double longitude2, double latitude2) {
+
         double latDistance = Math.toRadians(latitude2 - latitude1);
         double lonDistance = Math.toRadians(longitude2 - longitude1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)

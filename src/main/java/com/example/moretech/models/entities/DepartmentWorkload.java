@@ -19,7 +19,7 @@ public class DepartmentWorkload {
     @Enumerated(EnumType.STRING)
     private DepartmentEnum departmentType;
     private Integer workload;
+
     @Basic
     private LocalDateTime time;
-
 }

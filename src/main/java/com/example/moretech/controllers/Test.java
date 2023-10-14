@@ -21,10 +21,6 @@ public class Test {
     private final DepartmentWorkloadService departmentWorkloadService;
     private final OfficeRepo officeRepo;
     private final AtmRepo atmRepo;
-    @GetMapping("/test")
-    private String of1(){
-        return "qw";
-    }
     @GetMapping("/getAllOffices")
     private List<TestDto> of(){
         List<TestDto> req = new ArrayList<>();

@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 public class RouteDurationCalculatorImpl implements RouteDurationCalculator {
-
     @Value("${geoapify-key}")
     private String GEOAPIFY_KEY;
     private static final String URI_TEMPLATE =

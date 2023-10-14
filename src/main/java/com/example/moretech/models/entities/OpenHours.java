@@ -17,5 +17,4 @@ public class OpenHours {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "offices_id")
     private Office office;
-
 }
