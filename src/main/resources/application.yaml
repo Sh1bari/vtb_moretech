@@ -24,4 +24,4 @@ spring:
         enable_lazy_load_no_trans: true
   main:
     allow-circular-references: true
-geoapify-key: ${GEOAPIFY-KEY}
+geoapify-key: ${GEOAPIFY-KEY:4ec87ab852584f849d64832f697c7701}
