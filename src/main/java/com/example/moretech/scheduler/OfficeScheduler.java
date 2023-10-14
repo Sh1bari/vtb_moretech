@@ -21,7 +21,8 @@ public class OfficeScheduler {
     @Async
     @Scheduled(fixedRate = 5000)
     void sendIfo() throws NoSuchAlgorithmException, IOException {
-        URL url = new URL("http://localhost:8082/api/workload/2134");
+        System.out.println("запрос");
+        URL url = new URL("http://localhost:8083/api/workload/2134");
 
         // Открываем соединение
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -45,6 +46,9 @@ public class OfficeScheduler {
         try (OutputStream os = connection.getOutputStream()) {
             os.write(inputBytes, 0, inputBytes.length);
         }
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+        connection.disconnect();
 
     }
 }

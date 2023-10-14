@@ -18,6 +18,7 @@ public class DepartmentWorkloadController {
 
     @PostMapping("/workload/{id}")
     private void saveWorkLoad(@PathVariable String id, @RequestBody DepartmentWorkloadRequest departmentWorkload){
+        System.out.println("прием");
         departmentWorkloadService.saveWorkload(departmentWorkload, Long.parseLong(id));
     }
 
