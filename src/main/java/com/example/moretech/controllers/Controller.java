@@ -1,4 +1,4 @@
-package com.example.moretech.models.controllers;
+package com.example.moretech.controllers;
 
 import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.entities.OpenHours;

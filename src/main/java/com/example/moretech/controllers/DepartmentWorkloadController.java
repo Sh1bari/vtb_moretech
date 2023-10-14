@@ -1,4 +1,4 @@
-package com.example.moretech.models.controllers;
+package com.example.moretech.controllers;
 
 import com.example.moretech.models.DTO.DepartmentWorkloadRequest;
 import com.example.moretech.models.entities.DepartmentWorkload;
