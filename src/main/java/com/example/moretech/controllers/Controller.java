@@ -8,11 +8,18 @@ import com.example.moretech.repo.OfficeRepo;
 import com.example.moretech.repo.OpenHoursRepo;
 import com.example.moretech.services.CreateService;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -27,17 +34,23 @@ public class Controller {
     private void create() {
         createService.create();
     }
+    @GetMapping("/get")
+    private void get() {
+
+    }
 
     @PostMapping("/initDBOffice")
     private void initOffice(@RequestBody List<Office> offices) {
-        for (Office office : offices) {
-            officeRepo.save(office);
-            for (OpenHours o : office.getOpenHours()) {
-                subDays(office, o);
+        for (Office of : offices) {
+
+            officeRepo.save(of);
+            for (OpenHours o : of.getOpenHours()) {
+                subDays(of, o);
             }
-            for (OpenHours o : office.getOpenHoursIndividual()) {
-                subDays(office, o);
+            for (OpenHours o : of.getOpenHoursIndividual()) {
+                subDays(of, o);
             }
+
         }
     }
     @PostMapping("/initDBAtm")

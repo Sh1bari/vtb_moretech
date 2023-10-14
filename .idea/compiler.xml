@@ -10,10 +10,14 @@
         <module name="MoreTech" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="vtb_moretech1" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="MoreTech" options="-parameters" />
+      <module name="vtb_moretech1" options="-parameters" />
     </option>
   </component>
 </project>

@@ -1,7 +1,8 @@
 package com.example.moretech.models.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @Data
@@ -15,6 +16,7 @@ public class Atm {
     private Double latitude;
     private Double longitude;
     private Boolean allDay;
+
 
     @Embedded
     private Services services;

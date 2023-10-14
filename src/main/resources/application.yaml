@@ -2,8 +2,6 @@ server:
   port: 8083
   servlet:
     context-path: /api
-hibernate:
-  dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
 spring:
   flyway:
     baselineOnMigrate: true

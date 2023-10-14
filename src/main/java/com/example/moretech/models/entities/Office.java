@@ -1,16 +1,14 @@
 package com.example.moretech.models.entities;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import javax.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.locationtech.jts.geom.Geometry;
 
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
