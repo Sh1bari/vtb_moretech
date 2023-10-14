@@ -39,18 +39,6 @@ public class CreateServiceImpl implements CreateService {
                         .build();
                 departmentWorkloadRepo.save(dw);
             }
-
-            Iterable<Atm> atmIterable = atmRepo.findAll();
-            for (Atm atm : atmIterable) {
-                DepartmentWorkload dw = DepartmentWorkload.builder()
-                        .departmentId(atm.getId())
-                        .departmentType(DepartmentEnum.ATM)
-                        .workload(generateRandomNumber(0, 10))
-                        .time(targetDateTimeMonthAgo) //время
-                        .build();
-                departmentWorkloadRepo.save(dw);
-            }
-
             targetDateTimeMonthAgo = targetDateTimeMonthAgo.plusMinutes(10);
         }
     }
