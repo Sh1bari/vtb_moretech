@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 @Configuration
 @EnableAsync
@@ -20,35 +21,40 @@ public class OfficeScheduler {
 
     @Async
     @Scheduled(fixedRate = 5000)
-    void sendIfo() throws NoSuchAlgorithmException, IOException {
-        System.out.println("запрос");
-        URL url = new URL("http://localhost:8083/api/workload/2134");
+    void sendInfo() throws IOException {
+        post("http://localhost:8083/api/workload/2134", "OFFICE", generateRandomNumber(0, 10));
+    }
 
-        // Открываем соединение
+    private static void post(String urlStr, String departmentType, Integer workload) throws IOException {
+        System.out.println("запрос");
+        URL url = new URL(urlStr);
+
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        // Устанавливаем метод запроса на POST
         connection.setRequestMethod("POST");
 
-        // Устанавливаем заголовок Content-Type как application/json
         connection.setRequestProperty("Content-Type", "application/json");
 
-        // Включаем вывод данных
         connection.setDoOutput(true);
 
-        // Создаем JSON-строку для отправки
-        String jsonInputString = "{\"workload\": 1, \"departmentType\": \"OFFICE\"}";
+        String jsonInputString = "{\"workload\": " + workload + ", \"departmentType\": \"" + departmentType + "\"}";
 
-        // Преобразуем JSON-строку в байты
         byte[] inputBytes = jsonInputString.getBytes(StandardCharsets.UTF_8);
 
-        // Получаем выходной поток для записи данных
         try (OutputStream os = connection.getOutputStream()) {
             os.write(inputBytes, 0, inputBytes.length);
         }
         int responseCode = connection.getResponseCode();
         System.out.println("Response Code: " + responseCode);
         connection.disconnect();
+    }
 
+    private static int generateRandomNumber(int min, int max) {
+        if (min >= max) {
+            throw new IllegalArgumentException("Минимальное значение должно быть меньше максимального значения.");
+        }
+
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
     }
 }
