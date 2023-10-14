@@ -10,16 +10,12 @@
     background-color: #C5C7C8;
 }
 
-.container {
-    display: flex;
-    justify-content: space-between;
+.bg-custom-cian {
+    background-color: #00AAFF;
 }
 
-.block {
-    flex: 1;
-    height: 100px;
-    background-color: #1E4BD2;
-    margin: 5px;
+[class*="copyrights-pane"] {
+    display: none !important;
 }
 
 @font-face {

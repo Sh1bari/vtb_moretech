@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { YMaps, Map, Placemark, Clusterer, GeolocationControl, ZoomControl, FullscreenControl } from 'react-yandex-maps';
-import axios from 'axios';
+import { YMaps, Map, Placemark, Clusterer, GeolocationControl } from 'react-yandex-maps';
 import { api } from '../core/api';
 
 function MapComponent() {
@@ -8,6 +7,7 @@ function MapComponent() {
   const [atmPlacemarks, setAtmPlacemarks] = useState([]);
   const [mapKey, setMapKey] = useState(1);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api.get('/api/getAllOffices')
@@ -18,7 +18,7 @@ function MapComponent() {
           geometry: [office.latitude, office.longitude],
           options: {
             iconLayout: "default#image",
-            iconImageHref: "/bank1.png",
+            iconImageHref: "/bank.png",
             iconImageSize: [40, 40],
           },
           properties: {
@@ -44,7 +44,7 @@ function MapComponent() {
           },
           options: {
             iconLayout: "default#image",
-            iconImageHref: "/ATM1.png",
+            iconImageHref: "/ATM3.png",
             iconImageSize: [40, 40],
           },
         }));
@@ -57,75 +57,77 @@ function MapComponent() {
 
   const mergedPlacemarks = [...officePlacemarks, ...atmPlacemarks];
 
+
   useEffect(() => {
-    // Функция для получения текущего местоположения
-    const getCurrentLocation = () => {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setCurrentLocation([latitude, longitude]);
-          },
-          (error) => {
-            console.error('Ошибка получения текущего местоположения:', error);
-          }
-        );
-      }
+    // Задержка в 2 секунды перед скрытием гифки
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
     };
-    getCurrentLocation();
-    return;
   }, []);
+
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
+  // Добавьте обработчик события при клике на маркер
+  const handleMarkerClick = (e) => {
+    setSelectedMarker(e.get('target'));
+  };
 
   return (
     <YMaps
       query={{
         apikey: '666fdd6a-a191-4151-acd9-68476e330f7d',
-      }}>
-      <Map
-        key={mapKey}
-        width="100%"
-        height="100vh"
-        defaultState={{
-          center: [55.755814, 37.617635],
-          zoom: 10,
-          controls: [],
-        }}
-        modules={["geolocation", "geocode"]}
-        options={{
-          restrictMapArea: [
-            [53.027644, 27.552111],
-            [58.305095, 48.346313],
-          ],
-        }}
-      >
-        <Clusterer
-          options={{
-            preset: "islands#nightClusterIcons",
-            groupByCoordinates: false,
-            
-          }}
-        >
-          {mergedPlacemarks.map((placemark, index) => (
-            <Placemark
-              key={`${placemark.key}-${placemark.type}-${index}`}
-              geometry={placemark.geometry}
-              properties={placemark.properties}
-              options={placemark.options}
+      }}
+    >
+      <div className="relative">
+        {loading && (
+          <div className="h-screen flex items-center justify-center">
+            <img
+              src='/loading.gif' // Путь к гифке
+              alt="Loading"
+              hidden={!loading} // Скрыть, если loading равен false
             />
-          ))}
-        </Clusterer>
-        {currentLocation && (
-          <Placemark
-            geometry={currentLocation}
-            options={{
-              iconLayout: "default#image",
-              iconImageHref: "/geolocation.png",
-              iconImageSize: [30, 41],
-            }}
-          />
+          </div>
         )}
-        <GeolocationControl options={{ float: 'right' }} />
-      </Map>
+        <Map
+          key={mapKey}
+          width="100%"
+          height="100vh"
+          defaultState={{
+            center: [55.755814, 37.617635],
+            zoom: 10,
+            controls: [],
+          }}
+          modules={["geolocation", "geocode"]}
+          options={{
+            restrictMapArea: [
+              [53.469556, 35.094762],
+              [57.185870, 39.414526],
+            ],
+          }}
+          hidden={loading} // Скрыть, если loading равен true
+        >
+          <Clusterer
+            options={{
+              preset: "islands#nightClusterIcons",
+              groupByCoordinates: false,
+            }}
+          >
+            {mergedPlacemarks.map((placemark, index) => (
+              <Placemark
+                key={`${placemark.key}-${placemark.type}-${index}`}
+                geometry={placemark.geometry}
+                properties={placemark.properties}
+                options={placemark.options}
+              />
+            ))}
+          </Clusterer>
+          <GeolocationControl options={{ float: 'right' }} />
+        </Map>
+      </div>
     </YMaps>
   );
 }
