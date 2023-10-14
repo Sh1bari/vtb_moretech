@@ -1,8 +1,6 @@
 package com.example.moretech.controllers;
 
 import com.example.moretech.models.DTO.DepartmentWorkloadRequest;
-import com.example.moretech.models.entities.DepartmentWorkload;
-import com.example.moretech.repo.DepartmentWorkloadRepo;
 import com.example.moretech.services.DepartmentWorkloadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +15,7 @@ public class DepartmentWorkloadController {
     private final DepartmentWorkloadService departmentWorkloadService;
 
     @PostMapping("/workload/{id}")
-    private void saveWorkLoad(@PathVariable String id, @RequestBody DepartmentWorkloadRequest departmentWorkload){
+    private void saveWorkLoad(@PathVariable String id, @RequestBody DepartmentWorkloadRequest departmentWorkload) {
         departmentWorkloadService.saveWorkload(departmentWorkload, Long.parseLong(id));
     }
 

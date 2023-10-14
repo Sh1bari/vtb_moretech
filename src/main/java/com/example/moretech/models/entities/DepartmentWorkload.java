@@ -15,6 +15,7 @@ public class DepartmentWorkload {
     private Long id;
 
     private Long departmentId;
+    @Enumerated(EnumType.STRING)
     private DepartmentEnum departmentType;
     private Integer workload;
     @Basic

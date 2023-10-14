@@ -18,7 +18,7 @@ public class Controller {
     private final OpenHoursRepo openHoursRepo;
 
     @PostMapping("/initDBOffice")
-    private void init(@RequestBody List<Office> offices){
+    private void init(@RequestBody List<Office> offices) {
         for (Office office : offices) {
             officeRepo.save(office);
             for (OpenHours o : office.getOpenHours()) {
@@ -31,58 +31,58 @@ public class Controller {
     }
 
     private void subDays(Office office, OpenHours o) {
-        switch (o.getDays()){
-            case "пн-вт" ->{
+        switch (o.getDays()) {
+            case "пн-вт" -> {
                 save("пн", o, office);
                 save("вт", o, office);
             }
-            case "пн-ср" ->{
-                save("пн", o, office);
-                save("вт", o, office);
-                save("ср", o, office);
-            }
-            case "пн-чт" ->{
+            case "пн-ср" -> {
                 save("пн", o, office);
                 save("вт", o, office);
                 save("ср", o, office);
-                save("чт", o, office);
             }
-            case "пн-пт" ->{
+            case "пн-чт" -> {
                 save("пн", o, office);
                 save("вт", o, office);
                 save("ср", o, office);
                 save("чт", o, office);
-                save("пт", o, office);
             }
-            case "пн-сб" ->{
+            case "пн-пт" -> {
                 save("пн", o, office);
                 save("вт", o, office);
                 save("ср", o, office);
                 save("чт", o, office);
                 save("пт", o, office);
-                save("сб", o, office);
             }
-            case "пн-вс" ->{
+            case "пн-сб" -> {
                 save("пн", o, office);
                 save("вт", o, office);
                 save("ср", o, office);
                 save("чт", o, office);
                 save("пт", o, office);
                 save("сб", o, office);
-                save("вс", o, office);
             }
-            case "сб,вс" ->{
+            case "пн-вс" -> {
+                save("пн", o, office);
+                save("вт", o, office);
+                save("ср", o, office);
+                save("чт", o, office);
+                save("пт", o, office);
                 save("сб", o, office);
                 save("вс", o, office);
             }
-            case "в" ->{
+            case "сб,вс" -> {
+                save("сб", o, office);
+                save("вс", o, office);
+            }
+            case "в" -> {
                 save("вс", o, office);
             }
             default -> save(o.getDays(), o, office);
         }
     }
 
-    private void save(String day, OpenHours o, Office office){
+    private void save(String day, OpenHours o, Office office) {
         o.setDays(day);
         o.setOffice(office);
         openHoursRepo.save(o);
