@@ -13,18 +13,4 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class DepartmentWorkloadServiceImpl implements DepartmentWorkloadService {
 
-    private final DepartmentWorkloadRepo departmentWorkloadRepo;
-
-    /**
-     * Request type <code>{@link DepartmentWorkloadRequest}</code>
-     */
-    @Override
-    public void saveWorkload(DepartmentWorkloadRequest request, Long id) {
-        DepartmentWorkload departmentWorkload = new DepartmentWorkload();
-        departmentWorkload.setDepartmentType(request.getDepartmentType());
-        departmentWorkload.setWorkload(request.getWorkload());
-        departmentWorkload.setTime(LocalDateTime.now());
-        departmentWorkload.setDepartmentId(id);
-        departmentWorkloadRepo.save(departmentWorkload);
-    }
 }

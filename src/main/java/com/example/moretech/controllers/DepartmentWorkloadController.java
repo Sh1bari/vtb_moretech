@@ -10,13 +10,4 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class DepartmentWorkloadController {
 
-    @Autowired
-    private DepartmentWorkloadService departmentWorkloadService;
-
-    @PostMapping("/workload/{id}")
-    private void saveWorkLoad(@PathVariable String id, @RequestBody DepartmentWorkloadRequest departmentWorkload){
-        System.out.println("прием");
-        departmentWorkloadService.saveWorkload(departmentWorkload, Long.parseLong(id));
-    }
-
 }
