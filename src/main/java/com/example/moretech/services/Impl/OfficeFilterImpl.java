@@ -3,19 +3,21 @@ package com.example.moretech.services.Impl;
 import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.entities.OpenHours;
 import com.example.moretech.services.OfficeFilter;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class OfficeFilterImpl implements OfficeFilter {
     @Override
     public List<Office> filter(List<Office> offices, String hour, String hasRamp, Boolean isIndividual) {
         if (isIndividual) {
             return offices.parallelStream()
                     .filter(office -> {
-                        if (office.getHasRamp().equals(hasRamp)) {
+                        if (hasRamp.equals(office.getHasRamp())) {
                             Optional<OpenHours> hours = office.getOpenHoursIndividual().stream()
                                     .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
                                     .findFirst();
@@ -29,7 +31,7 @@ public class OfficeFilterImpl implements OfficeFilter {
         } else {
             return offices.parallelStream()
                     .filter(office -> {
-                        if (office.getHasRamp().equals(hasRamp)) {
+                        if (hasRamp.equals(office.getHasRamp())) {
                             Optional<OpenHours> hours = office.getOpenHours().stream()
                                     .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
                                     .findFirst();

@@ -5,4 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-public class DepartmentWorkloadController {}
+public class DepartmentWorkloadController {
+
+}
