@@ -3,6 +3,9 @@ package com.example.moretech.util;
 public class DistanceCalculator {
     private static final double EARTH_RADIUS = 6371;
 
+    /**
+     * @return расстояние в метрах.
+     */
     public static double calculateDistance(double longitude1, double latitude1,
                                            double longitude2, double latitude2) {
         double latDistance = Math.toRadians(latitude2 - latitude1);
