@@ -14,11 +14,4 @@ import java.util.List;
 public class OfficeSearchingServiceImpl implements OfficeSearchingService {
     private final OfficeRepo officeRepo;
 
-    @Override
-    public List<Office> findInRadius(double longitude, double latitude, double radius) {
-        Specification<Office> specification = ((root, query, criteriaBuilder) -> {
-            double latitude1 = root.get("latitude")
-        });
-        return officeRepo.findAll()
-    }
 }

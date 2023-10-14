@@ -1,7 +1,7 @@
 package com.example.moretech.models.entities;
 
 import com.example.moretech.models.enums.DepartmentEnum;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
