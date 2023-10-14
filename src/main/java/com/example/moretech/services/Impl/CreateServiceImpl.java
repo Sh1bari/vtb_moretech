@@ -23,27 +23,35 @@ public class CreateServiceImpl implements CreateService {
 
     @Override
     public void create() {
-        Iterable<Office> officeIterable = officeRepo.findAll();
-        for (Office office : officeIterable) {
-            DepartmentWorkload dw = new DepartmentWorkload();
-            DepartmentWorkload.builder()
-                    .departmentId(office.getId())
-                    .departmentType(DepartmentEnum.OFFICE)
-                    .workload(generateRandomNumber(0,10))
-                    .time(LocalDateTime.now())//время
-                    .build();
-            departmentWorkloadRepo.save(dw);
-        }
-        Iterable<Atm> atmIterable = atmRepo.findAll();
-        for (Atm atm : atmIterable) {
-            DepartmentWorkload dw = new DepartmentWorkload();
-            DepartmentWorkload.builder()
-                    .departmentId(atm.getId())
-                    .departmentType(DepartmentEnum.ATM)
-                    .workload(generateRandomNumber(0,10))
-                    .time(LocalDateTime.now())//время
-                    .build();
-            departmentWorkloadRepo.save(dw);
+        // for ( every 10 min change .time())
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTimeMonthAgo = now.minusMonths(1);
+        LocalDateTime targetDateTimeMonthAgo = dateTimeMonthAgo;
+
+        while (targetDateTimeMonthAgo.isBefore(now)) {
+            Iterable<Office> officeIterable = officeRepo.findAll();
+            for (Office office : officeIterable) {
+                DepartmentWorkload dw = DepartmentWorkload.builder()
+                        .departmentId(office.getId())
+                        .departmentType(DepartmentEnum.OFFICE)
+                        .workload(generateRandomNumber(0, 10))
+                        .time(targetDateTimeMonthAgo) //время
+                        .build();
+                departmentWorkloadRepo.save(dw);
+            }
+
+            Iterable<Atm> atmIterable = atmRepo.findAll();
+            for (Atm atm : atmIterable) {
+                DepartmentWorkload dw = DepartmentWorkload.builder()
+                        .departmentId(atm.getId())
+                        .departmentType(DepartmentEnum.ATM)
+                        .workload(generateRandomNumber(0, 10))
+                        .time(targetDateTimeMonthAgo) //время
+                        .build();
+                departmentWorkloadRepo.save(dw);
+            }
+
+            targetDateTimeMonthAgo = targetDateTimeMonthAgo.plusMinutes(10);
         }
     }
 

@@ -6,7 +6,9 @@ import com.example.moretech.models.entities.OpenHours;
 import com.example.moretech.repo.AtmRepo;
 import com.example.moretech.repo.OfficeRepo;
 import com.example.moretech.repo.OpenHoursRepo;
+import com.example.moretech.services.CreateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,12 @@ public class Controller {
     private final OfficeRepo officeRepo;
     private final OpenHoursRepo openHoursRepo;
     private final AtmRepo atmRepo;
+    private final CreateService createService;
+
+    @GetMapping("/create")
+    private void create() {
+        createService.create();
+    }
 
     @PostMapping("/initDBOffice")
     private void initOffice(@RequestBody List<Office> offices) {
