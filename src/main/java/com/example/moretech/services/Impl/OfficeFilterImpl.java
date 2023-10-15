@@ -22,7 +22,10 @@ public class OfficeFilterImpl implements OfficeFilter {
         if (isIndividual) {
             return offices.parallelStream()
                     .filter(office -> {
-                        if (hasRamp.equals(office.getHasRamp())) {
+                        try {
+                            if (hasRamp.equals("Y") && !office.getHasRamp().equals("Y")) {
+                                return false;
+                            }
                             Optional<OpenHours> hours = office.getOpenHoursIndividual().stream()
                                     .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
                                     .findFirst();
@@ -30,21 +33,28 @@ public class OfficeFilterImpl implements OfficeFilter {
                             if (hours.isPresent()) {
                                 return isTimeInRange(hours.get().getHours(),
                                         LocalTime.of(Integer.parseInt(finalHour), 0));
+                            } else {
+                                return false;
                             }
+                        } catch (NullPointerException e) {
+                            return false;
                         }
-                        return false;
                     }).toList();
         } else {
             return offices.parallelStream()
                     .filter(office -> {
                         if (hasRamp.equals(office.getHasRamp())) {
-                            Optional<OpenHours> hours = office.getOpenHours().stream()
-                                    .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
-                                    .findFirst();
+                            try {
+                                Optional<OpenHours> hours = office.getOpenHours().stream()
+                                        .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
+                                        .findAny();
 
-                            if (hours.isPresent()) {
-                                return isTimeInRange(hours.get().getHours(),
-                                        LocalTime.of(Integer.parseInt(finalHour), 0));
+                                if (hours.isPresent()) {
+                                    return isTimeInRange(hours.get().getHours(),
+                                            LocalTime.of(Integer.parseInt(finalHour), 0));
+                                }
+                            } catch (NullPointerException e) {
+                                return false;
                             }
                         }
                         return false;
@@ -69,7 +79,6 @@ public class OfficeFilterImpl implements OfficeFilter {
             String[] parts = timeRange.split("-");
             LocalTime start = LocalTime.parse(parts[0]);
             LocalTime end = LocalTime.parse(parts[1]);
-
             return time.isAfter(start) && time.isBefore(end);
         }
 

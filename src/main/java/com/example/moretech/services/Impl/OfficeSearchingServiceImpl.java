@@ -22,13 +22,15 @@ public class OfficeSearchingServiceImpl implements OfficeSearchingService {
         Predicate<Office> predicate = office -> DistanceCalculator.calculateDistance(
                 office.getLongitude(), office.getLatitude(),
                 longitude, latitude) <= radius;
-        return officeRepo.findAll().stream()
+
+        return officeRepo.findAll().parallelStream()
                 .filter(predicate).toList();
     }
 
     @Override
     public List<Office> findAllInRadiusByFilter(double longitude, double latitude, double radius,
                                                 String hour, String hasRamp, Boolean isIndividual) {
+
         return officeFilter.filter(
                 this.findInRadius(longitude, latitude, radius),
                 hour, hasRamp, isIndividual);
