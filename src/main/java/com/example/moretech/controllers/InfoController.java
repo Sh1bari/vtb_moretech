@@ -17,7 +17,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-public class Test {
+public class InfoController {
 
     private final DepartmentWorkloadService departmentWorkloadService;
     private final OfficeRepo officeRepo;
