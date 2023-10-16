@@ -7,50 +7,74 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OfficeFilterImpl implements OfficeFilter {
+    /**
+     *
+     * @param offices
+     * @param hour - хочет получить инф
+     * @param hasRamp - есть пандус
+     * @param isIndividual - физЛицо?
+     * @return
+     */
     @Override
-    public List<Office> filter(List<Office> offices, String hour, String hasRamp, Boolean isIndividual) {
-        if (hour == null) {
-            hour = String.valueOf(LocalTime.now().getHour());
-        }
+    public List<Office> filter(List<Office> offices, String hour, String hasRamp, String isIndividual) {
+        List<Office> officeList = new ArrayList<>();
 
-        String finalHour = hour;
-        if (isIndividual) {
-            return offices.parallelStream()
-                    .filter(office -> {
-                        if (hasRamp.equals(office.getHasRamp())) {
-                            Optional<OpenHours> hours = office.getOpenHoursIndividual().stream()
-                                    .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
-                                    .findFirst();
-
-                            if (hours.isPresent()) {
-                                return isTimeInRange(hours.get().getHours(),
-                                        LocalTime.of(Integer.parseInt(finalHour), 0));
-                            }
-                        }
-                        return false;
-                    }).toList();
-        } else {
-            return offices.parallelStream()
-                    .filter(office -> {
-                        if (hasRamp.equals(office.getHasRamp())) {
-                            Optional<OpenHours> hours = office.getOpenHours().stream()
-                                    .filter(openHours -> openHours.getDays().equals(getFormattedDay()))
-                                    .findFirst();
-
-                            if (hours.isPresent()) {
-                                return isTimeInRange(hours.get().getHours(),
-                                        LocalTime.of(Integer.parseInt(finalHour), 0));
-                            }
-                        }
-                        return false;
-                    }).toList();
-        }
+        offices.forEach(o->{
+            if(isIndConv(o.getHasRamp(), hasRamp)) {    //Есть рампа
+                if(individualCheck(o, isIndividual)){      //ип или юр
+                    if(workInHour(o, hour)){
+                        officeList.add(o);
+                    }
+                }
+            }
+        });
+        return officeList;
     }
+    private boolean workInHour(Office office, String hour){
+        String dayNow = getFormattedDay();
+        for (OpenHours o : office.getOpenHours()) {
+            if(dayNow.equals(o.getDays())) {
+                if (isTimeInRange(o.getHours(), LocalTime.of(Integer.parseInt(hour), 0))) {
+                    return true;
+                }
+            }
+        }
+        for (OpenHours o : office.getOpenHoursIndividual()) {
+            if(dayNow.equals(o.getDays())) {
+                if (isTimeInRange(o.getHours(), LocalTime.of(Integer.parseInt(hour), 0))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean individualCheck(Office office, String isIndividual){
+        if(isIndividual == null){
+            return true;
+        } else if (office.getOpenHours().get(0).getDays().equals("Не обслуживает ЮЛ") && isIndividual.equals("N")) {
+            return false;
+        } else if (office.getOpenHoursIndividual().get(0).getDays().equals("Не обслуживает ИП") && isIndividual.equals("Y")) {
+            return false;
+        }else return true;
+    }
+
+    private boolean isIndConv(String str, String hasRamp){
+        if(str == null){
+            return false;
+        }else if(hasRamp.equals("N")){
+            return true;
+        }else if(hasRamp.isEmpty()){
+            return true;
+        }else return str.equals("Y") && hasRamp.equals("Y");
+    }
+
 
     private String getFormattedDay() {
         return switch (LocalDateTime.now().getDayOfWeek()) {
@@ -72,7 +96,6 @@ public class OfficeFilterImpl implements OfficeFilter {
 
             return time.isAfter(start) && time.isBefore(end);
         }
-
         return false;
     }
 }

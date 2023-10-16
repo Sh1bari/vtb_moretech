@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface OfficeFilter {
     List<Office> filter(List<Office> offices, String hour, String hasRamp,
-                        Boolean isIndividual);
+                        String isIndividual);
 }
