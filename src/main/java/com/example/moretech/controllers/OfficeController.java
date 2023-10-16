@@ -43,7 +43,7 @@ public class OfficeController {
      */
     @GetMapping("/offices")
     public List<FinallyNResDto> getOfficesInRadius(
-            @RequestParam(value = "radius", defaultValue = "1000") Double radius,
+            @RequestParam(value = "radius", defaultValue = "3000") Double radius,
             @RequestParam(value = "longitude") Double longitude,
             @RequestParam(value = "latitude") Double latitude,
             @RequestParam(value = "hasRamp", defaultValue = "N") String hasRamp,
