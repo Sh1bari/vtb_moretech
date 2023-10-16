@@ -1,0 +1,19 @@
+button, p{
+    z-index: 10;
+    position: fixed;
+}
+
+.btn1{
+    top: 100px;
+    left: 10px;
+}
+
+.btn2{
+    top: 130px;
+    left: 10px;
+}
+
+p{
+    top: 160px;
+    left: 10px;
+}
