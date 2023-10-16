@@ -2,14 +2,12 @@ package com.example.moretech.controllers;
 
 import com.example.moretech.models.DTO.*;
 import com.example.moretech.models.entities.Office;
+import com.example.moretech.repo.OfficeRepo;
 import com.example.moretech.services.NCounterService;
 import com.example.moretech.services.OfficeSearchingService;
 import com.example.moretech.services.WorkloadUtilService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,6 +20,12 @@ public class OfficeController {
     private final OfficeSearchingService officeSearchingService;
     private final NCounterService nCounterService;
     private final WorkloadUtilService workloadUtilService;
+    private final OfficeRepo officeRepo;
+
+    @GetMapping("/office/{id}")
+    private Office getOffice(@PathVariable String id){
+        return officeRepo.findById(Long.parseLong(id)).get();
+    }
 
     @GetMapping("/offices")
     public List<FinallyNResDto> getOfficesInRadius(

@@ -35,7 +35,7 @@ public class WorkloadUtilServiceImpl implements WorkloadUtilService {
 
     @Override
     public Double linearFunction(Double x, Double maxValue) {
-        if (x <= 0) {
+        if (x <= 0.0) {
             return 0.0;
         } else if (x >= maxValue) {
             return 1.0;
