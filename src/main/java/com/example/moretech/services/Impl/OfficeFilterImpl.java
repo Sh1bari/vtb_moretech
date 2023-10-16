@@ -1,5 +1,6 @@
 package com.example.moretech.services.Impl;
 
+import com.example.moretech.models.DTO.OfficeDto;
 import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.entities.OpenHours;
 import com.example.moretech.services.OfficeFilter;
@@ -23,8 +24,8 @@ public class OfficeFilterImpl implements OfficeFilter {
      * @return
      */
     @Override
-    public List<Office> filter(List<Office> offices, String hour, String hasRamp, String isIndividual) {
-        List<Office> officeList = new ArrayList<>();
+    public List<OfficeDto> filter(List<OfficeDto> offices, String hour, String hasRamp, String isIndividual) {
+        List<OfficeDto> officeList = new ArrayList<>();
 
         offices.forEach(o->{
             if(isIndConv(o.getHasRamp(), hasRamp)) {    //Есть рампа
@@ -37,7 +38,7 @@ public class OfficeFilterImpl implements OfficeFilter {
         });
         return officeList;
     }
-    private boolean workInHour(Office office, String hour){
+    private boolean workInHour(OfficeDto office, String hour){
         String dayNow = getFormattedDay();
         for (OpenHours o : office.getOpenHours()) {
             if(dayNow.equals(o.getDays())) {
@@ -55,8 +56,8 @@ public class OfficeFilterImpl implements OfficeFilter {
         }
         return false;
     }
-    private boolean individualCheck(Office office, String isIndividual){
-        if(isIndividual == null){
+    private boolean individualCheck(OfficeDto office, String isIndividual){
+        if(isIndividual.equals("")){
             return true;
         } else if (office.getOpenHours().get(0).getDays().equals("Не обслуживает ЮЛ") && isIndividual.equals("N")) {
             return false;

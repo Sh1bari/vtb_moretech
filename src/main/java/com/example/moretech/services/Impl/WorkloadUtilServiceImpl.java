@@ -32,4 +32,15 @@ public class WorkloadUtilServiceImpl implements WorkloadUtilService {
     public Double calculatePredictedK(Double predictedN, Double distance, Double w1, Double w2) {
         return predictedN * w1 + distance * w2;
     }
+
+    @Override
+    public Double linearFunction(Double x, Double maxValue) {
+        if (x <= 0) {
+            return 0.0;
+        } else if (x >= maxValue) {
+            return 1.0;
+        } else {
+            return x / maxValue;
+        }
+    }
 }
