@@ -29,6 +29,18 @@ public class OfficeController {
         return officeRepo.findById(Long.parseLong(id)).get();
     }
 
+    /**
+     *
+     * @param radius - радиус поиска
+     * @param longitude
+     * @param latitude
+     * @param hasRamp N Y
+     * @param hour 0-24
+     * @param isIndividual N Y
+     * @return k- итоговая оценка (меньше - лучше)
+     * @return n- оценка нагрузки (меньше - лучше)
+     * @return s- оценка расстояния (меньше - лучше)
+     */
     @GetMapping("/offices")
     public List<FinallyNResDto> getOfficesInRadius(
             @RequestParam(value = "radius", defaultValue = "1000") Double radius,
