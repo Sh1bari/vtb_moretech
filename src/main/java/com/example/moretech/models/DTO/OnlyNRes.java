@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OnlyNRes {
     private Long id;
+    private String address;
     private Double latitude;
     private Double longitude;
     private DepartmentEnum departmentType;
@@ -21,6 +22,7 @@ public class OnlyNRes {
     public static OnlyNRes mapFromOffice(OfficeDto o) {
         OnlyNRes res = new OnlyNRes();
         res.setId(o.getId());
+        res.setAddress(o.getAddress());
         res.setLongitude(o.getLongitude());
         res.setLatitude(o.getLatitude());
         res.setDistanceFromPoint(o.getDistanceFromPoint());
@@ -32,6 +34,7 @@ public class OnlyNRes {
         return FinallyNResDto.builder()
                 .departmentType(DepartmentEnum.OFFICE)
                 .id(onlyNRes.getId())
+                .address(onlyNRes.getAddress())
                 .longitude(onlyNRes.getLongitude())
                 .latitude(onlyNRes.getLatitude())
                 .build();

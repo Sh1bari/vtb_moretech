@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FinallyNResDto {
     private Long id;
+    private String address;
     private Double latitude;
     private Double longitude;
     private DepartmentEnum departmentType;
