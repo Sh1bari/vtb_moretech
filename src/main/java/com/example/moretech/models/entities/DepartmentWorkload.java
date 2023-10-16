@@ -1,9 +1,9 @@
 package com.example.moretech.models.entities;
 
 import com.example.moretech.models.enums.DepartmentEnum;
-import javax.persistence.*;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

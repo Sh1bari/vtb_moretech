@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +22,9 @@ public class Test {
     private final DepartmentWorkloadService departmentWorkloadService;
     private final OfficeRepo officeRepo;
     private final AtmRepo atmRepo;
+
     @GetMapping("/getAllOffices")
-    private List<TestDto> of(){
+    private List<TestDto> of() {
         List<TestDto> req = new ArrayList<>();
         for (var o : officeRepo.findAll()) {
             req.add(TestDto.builder()
@@ -34,8 +36,9 @@ public class Test {
         }
         return req;
     }
+
     @GetMapping("/getAllAtms")
-    private List<TestDto> atm(){
+    private List<TestDto> atm() {
         List<TestDto> req = new ArrayList<>();
         for (var o : atmRepo.findAll()) {
             req.add(TestDto.builder()
@@ -47,6 +50,7 @@ public class Test {
         }
         return req;
     }
+
     @GetMapping("/getAll")
     private List<TestDto> a() {
         List<TestDto> req = new ArrayList<>();
@@ -60,6 +64,7 @@ public class Test {
         }
         return req;
     }
+
     private final OpenHoursRepo openHoursRepo;
 
     @PostMapping("/initDBOffice")

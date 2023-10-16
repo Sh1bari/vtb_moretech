@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 @Data
@@ -34,7 +32,7 @@ public class OfficeDto {
     private List<OpenHours> openHours;
     private List<OpenHours> openHoursIndividual;
 
-    public static OfficeDto mapFromOffice(Office o, Double distanceFromPoint){
+    public static OfficeDto mapFromOffice(Office o, Double distanceFromPoint) {
         return OfficeDto.builder()
                 .id(o.getId())
                 .salePointName(o.getSalePointName())

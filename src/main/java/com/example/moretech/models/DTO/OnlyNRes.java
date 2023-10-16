@@ -1,6 +1,5 @@
 package com.example.moretech.models.DTO;
 
-import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.enums.DepartmentEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +18,7 @@ public class OnlyNRes {
     private Double avgN;
     private Double distanceFromPoint;
 
-    public static OnlyNRes mapFromOffice(OfficeDto o){
+    public static OnlyNRes mapFromOffice(OfficeDto o) {
         OnlyNRes res = new OnlyNRes();
         res.setId(o.getId());
         res.setLongitude(o.getLongitude());
@@ -28,7 +27,8 @@ public class OnlyNRes {
         res.setDepartmentType(DepartmentEnum.OFFICE);
         return res;
     }
-    public static FinallyNResDto mapToFinallyNResDto(OnlyNRes onlyNRes){
+
+    public static FinallyNResDto mapToFinallyNResDto(OnlyNRes onlyNRes) {
         return FinallyNResDto.builder()
                 .departmentType(DepartmentEnum.OFFICE)
                 .id(onlyNRes.getId())

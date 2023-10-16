@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class OfficeSearchingServiceImpl implements OfficeSearchingService {
         List<Office> offices = officeRepo.findAll();
         for (Office o : offices) {
             double dis = DistanceCalculator.calculateDistance(o.getLongitude(), o.getLatitude(), longitude, latitude);
-            if(dis<= radius){
+            if (dis <= radius) {
                 res.add(OfficeDto.mapFromOffice(o, dis));
             }
         }
@@ -37,7 +36,7 @@ public class OfficeSearchingServiceImpl implements OfficeSearchingService {
 
     @Override
     public List<OfficeDto> findAllInRadiusByFilter(double longitude, double latitude, double radius,
-                                                String hour, String hasRamp, String isIndividual) {
+                                                   String hour, String hasRamp, String isIndividual) {
         List<OfficeDto> offices = this.findInRadius(longitude, latitude, radius);
         return officeFilter.filter(offices, hour, hasRamp, isIndividual);
     }

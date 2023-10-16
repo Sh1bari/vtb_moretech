@@ -1,7 +1,8 @@
 package com.example.moretech.models.entities;
 
-import javax.persistence.*;
 import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
 @Data

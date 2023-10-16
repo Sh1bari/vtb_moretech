@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DepartmentWorkloadServiceImpl implements DepartmentWorkloadService {}
+public class DepartmentWorkloadServiceImpl implements DepartmentWorkloadService {
+}

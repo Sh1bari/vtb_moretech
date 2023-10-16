@@ -1,7 +1,6 @@
 package com.example.moretech.services.Impl;
 
 import com.example.moretech.models.DTO.OfficeDto;
-import com.example.moretech.models.entities.Office;
 import com.example.moretech.models.entities.OpenHours;
 import com.example.moretech.services.OfficeFilter;
 import org.springframework.stereotype.Service;
@@ -10,16 +9,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class OfficeFilterImpl implements OfficeFilter {
     /**
-     *
      * @param offices
-     * @param hour - хочет получить инф
-     * @param hasRamp - есть пандус
+     * @param hour         - хочет получить инф
+     * @param hasRamp      - есть пандус
      * @param isIndividual - физЛицо?
      * @return
      */
@@ -27,10 +23,10 @@ public class OfficeFilterImpl implements OfficeFilter {
     public List<OfficeDto> filter(List<OfficeDto> offices, String hour, String hasRamp, String isIndividual) {
         List<OfficeDto> officeList = new ArrayList<>();
 
-        offices.forEach(o->{
-            if(isIndConv(o.getHasRamp(), hasRamp)) {    //Есть рампа
-                if(individualCheck(o, isIndividual)){      //ип или юр
-                    if(workInHour(o, hour)){
+        offices.forEach(o -> {
+            if (isIndConv(o.getHasRamp(), hasRamp)) {    //Есть рампа
+                if (individualCheck(o, isIndividual)) {      //ип или юр
+                    if (workInHour(o, hour)) {
                         officeList.add(o);
                     }
                 }
@@ -38,17 +34,18 @@ public class OfficeFilterImpl implements OfficeFilter {
         });
         return officeList;
     }
-    private boolean workInHour(OfficeDto office, String hour){
+
+    private boolean workInHour(OfficeDto office, String hour) {
         String dayNow = getFormattedDay();
         for (OpenHours o : office.getOpenHours()) {
-            if(dayNow.equals(o.getDays())) {
+            if (dayNow.equals(o.getDays())) {
                 if (isTimeInRange(o.getHours(), LocalTime.of(Integer.parseInt(hour), 0))) {
                     return true;
                 }
             }
         }
         for (OpenHours o : office.getOpenHoursIndividual()) {
-            if(dayNow.equals(o.getDays())) {
+            if (dayNow.equals(o.getDays())) {
                 if (isTimeInRange(o.getHours(), LocalTime.of(Integer.parseInt(hour), 0))) {
                     return true;
                 }
@@ -56,24 +53,23 @@ public class OfficeFilterImpl implements OfficeFilter {
         }
         return false;
     }
-    private boolean individualCheck(OfficeDto office, String isIndividual){
-        if(isIndividual.equals("")){
+
+    private boolean individualCheck(OfficeDto office, String isIndividual) {
+        if (isIndividual.equals("")) {
             return true;
         } else if (office.getOpenHours().get(0).getDays().equals("Не обслуживает ЮЛ") && isIndividual.equals("N")) {
             return false;
-        } else if (office.getOpenHoursIndividual().get(0).getDays().equals("Не обслуживает ИП") && isIndividual.equals("Y")) {
-            return false;
-        }else return true;
+        } else return !office.getOpenHoursIndividual().get(0).getDays().equals("Не обслуживает ИП") || !isIndividual.equals("Y");
     }
 
-    private boolean isIndConv(String str, String hasRamp){
-        if(str == null){
+    private boolean isIndConv(String str, String hasRamp) {
+        if (str == null) {
             return false;
-        }else if(hasRamp.equals("N")){
+        } else if (hasRamp.equals("N")) {
             return true;
-        }else if(hasRamp.isEmpty()){
+        } else if (hasRamp.isEmpty()) {
             return true;
-        }else return str.equals("Y") && hasRamp.equals("Y");
+        } else return str.equals("Y") && hasRamp.equals("Y");
     }
 
 

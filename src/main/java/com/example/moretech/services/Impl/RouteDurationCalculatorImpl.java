@@ -21,7 +21,7 @@ public class RouteDurationCalculatorImpl implements RouteDurationCalculator {
 
     /**
      * @throws RouteCalculationException если возникла ошибка на стороне сервиса geoapify или
-     * маршрут не может быть найден.
+     *                                   маршрут не может быть найден.
      */
     @Override
     @Cacheable("routeDurationByCoordinatesAndTransport")

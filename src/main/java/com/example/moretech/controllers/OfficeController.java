@@ -1,6 +1,8 @@
 package com.example.moretech.controllers;
 
-import com.example.moretech.models.DTO.*;
+import com.example.moretech.models.DTO.FinallyNResDto;
+import com.example.moretech.models.DTO.NResDto;
+import com.example.moretech.models.DTO.OfficeDto;
 import com.example.moretech.models.entities.Office;
 import com.example.moretech.repo.OfficeRepo;
 import com.example.moretech.services.NCounterService;
@@ -23,7 +25,7 @@ public class OfficeController {
     private final OfficeRepo officeRepo;
 
     @GetMapping("/office/{id}")
-    private Office getOffice(@PathVariable String id){
+    private Office getOffice(@PathVariable String id) {
         return officeRepo.findById(Long.parseLong(id)).get();
     }
 
@@ -47,7 +49,8 @@ public class OfficeController {
         List<FinallyNResDto> res = nCounterService.getFinallyMetricForOffices(r, radius);
         return res;
     }
-    private String getTime(String hour){
+
+    private String getTime(String hour) {
         if (hour == null) {
             hour = String.valueOf(LocalTime.now().getHour());
         }

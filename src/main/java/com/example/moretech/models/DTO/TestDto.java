@@ -16,7 +16,7 @@ public class TestDto {
     private Double longitude;
     private DepartmentEnum departmentType;
 
-    public static List<TestDto> mapFromListOfOffices(List<Office> of){
+    public static List<TestDto> mapFromListOfOffices(List<Office> of) {
         List<TestDto> res = new ArrayList<>();
         for (Office o : of) {
             res.add(TestDto.builder()
