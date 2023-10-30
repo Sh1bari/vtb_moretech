@@ -1,98 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { YMaps, Map, Placemark, Clusterer, GeolocationControl } from '@pbe/react-yandex-maps';
-import '../styles.css';
-import { api } from '../core/api.js';
+import { React, useEffect, useState, useRef } from 'react'
+import { YMaps, Map, Placemark, ListBox, ListBoxItem } from '@pbe/react-yandex-maps';
+import ChooseRoute from "./ChooseRoute";
 
 function MyMap() {
-  const [data, setData] = useState([]);
-  const [clusterPoints, setClusterPoints] = useState([]);
-  const [userLocation, setUserLocation] = useState(null);
-  const [activePlacemark, setActivePlacemark] = useState(null);
-  const [dataLoaded, setDataLoaded] = useState(false); // Состояние для отслеживания загрузки данных
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const officesResponse = await api.get('/api/getAllOffices');
-        const atmResponse = await api.get('/api/getAllAtms');
-        const offices = officesResponse.data;
-        const atm = atmResponse.data;
+    const [currentLocation, setCurrentLocation] = useState(null);
 
-        // Обновляем данные и точки для кластера
-        setData([...offices, ...atm]);
-        const points = [...offices, ...atm].map((item) => [item.latitude, item.longitude]);
-        setClusterPoints(points);
+    useEffect(() => {
+        const getCurrentLocation = () => {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        setCurrentLocation([latitude, longitude]);
+                    },
+                    (error) => {
+                        console.error('Ошибка получения текущего местоположения:', error);
+                    }
+                );
+            }
+        };
+        getCurrentLocation();
+    }, []);
 
-        // Устанавливаем, что данные загружены
-        setDataLoaded(true);
-      } catch (error) {
-        console.error('Ошибка при загрузке данных', error);
-      }
-    }
+    const map = useRef(null);
+    const mapState = {
+        center: [55.753600, 37.621184],
+        zoom: 12
+    };
 
-    fetchData();
+    const multiRoute = useRef(null);
 
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation([latitude, longitude]);
-      });
-    }
-  }, []);
+    const addRoute = (ymaps) => {
+        const pointA = currentLocation;
+        const pointB = [];
 
-  return (
-    <div className="">
-      <YMaps
-        
-        query={{
-          ns: "use-load-option",
-          load: "Map,control.ZoomControl,control.FullscreenControl,geoObject.addon.balloon",
-        }}
-      >
-        <Map
-          style={{ width: '100%', height: '70vh' }}
-          modules={["geolocation", "geocode"]}
-          defaultState={{
-            center: userLocation || [55.75, 37.57],
-            zoom: 10,
-            controls: ["zoomControl", "fullscreenControl"],
-          }}
-        >
-          <GeolocationControl options={{ float: "left" }} />
-          {dataLoaded && ( // Отображаем метки только после загрузки данных
-            <Clusterer
-              options={{
-                preset: "islands#nightClusterIcons",
-                groupByCoordinates: false,
-              }}
+        multiRoute.current = new ymaps.multiRouter.MultiRoute(
+            {
+                referencePoints: [pointA, pointB],
+                params: {
+                    routingMode: 'auto'
+                }
+            },
+            {
+                wayPointStartIconLayout: 'none',
+                wayPointFinishIconLayout: 'none',
+                boundsAutoApply: false
+            }
+        );
+
+        map.current.geoObjects.add(multiRoute.current);
+    };
+
+    const [routeType, setRouteType] = useState();
+
+    const handleRouteTypeChange = (newRouteType) => {
+        setRouteType(newRouteType);
+        if (multiRoute.current) {
+            multiRoute.current.model.setParams({
+                routingMode: newRouteType
+            });
+        }
+    };
+
+
+    return (
+        <div>
+            <YMaps
+                query={{ apikey: '666fdd6a-a191-4151-acd9-68476e330f7d', }}
             >
-              {clusterPoints.map((coordinates, index) => (
-                <Placemark
-                  key={index}
-                  geometry={coordinates}
-                  options={{
-                    iconLayout: "default#image",
-                    iconImageHref: activePlacemark === index ? "/bank1.png" : "/ATM1.png",
-                    iconImageSize: [40, 40],
-                  }}
-                />
-              ))}
-            </Clusterer>
-          )}
-          {userLocation && (
-            <Placemark
-              geometry={userLocation}
-              options={{
-                iconLayout: "default#image",
-                iconImageHref: "/geolocation.png",
-                iconImageSize: [30, 41],
-              }}
-            />
-          )}
-        </Map>
-      </YMaps>
-    </div>
-  );
+                <Map
+                    defaultState={{
+                        center: [55.753600, 37.621184],
+                        zoom: 12,
+                        controls: ["zoomControl", "fullscreenControl"],
+                    }}
+                    width="100%"
+                    height="90vh"
+                    state={mapState}
+                    instanceRef={map}
+                    onLoad={addRoute}
+                    modules={["control.ZoomControl", "control.FullscreenControl", "multiRouter.MultiRoute"]}
+                >
+                    <ListBox data={{ content: "Выберите тип" }}>
+                        <ListBoxItem data={{ content: "Банкоматы" }} />
+                        <ListBoxItem data={{ content: "Оффисы" }} />
+                    </ListBox>
+                    {currentLocation && (
+                        <Placemark
+                            geometry={currentLocation}
+                            options={{
+                                iconLayout: "default#image",
+                                iconImageHref: "/geolocation.png",
+                                iconImageSize: [30, 41],
+                            }}
+                        />
+                    )}
+                </Map>
+            </YMaps>
+            <ChooseRoute onRouteTypeChange={handleRouteTypeChange} />
+        </div>
+    )
 }
 
 export default MyMap;

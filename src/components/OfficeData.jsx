@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { YMaps, Map, Placemark, Clusterer, GeolocationControl } from 'react-yandex-maps';
+import FilterComponent from './Filter2';
+import ScrollingList from './ScrollingList';
 import { api } from '../core/api';
-import FilterComponent from './Filter'; // Обратите внимание на новое имя компонента
 
-function YourComponent() {
+function OfficeData() {
     const [officesData, setOfficesData] = useState([]);
     const [officePlacemarks, setOfficePlacemarks] = useState([]);
     const [currentLocation, setCurrentLocation] = useState(null);
@@ -16,16 +17,14 @@ function YourComponent() {
         hour: '12',
     });
 
-    useEffect(() => {
-        fetchOffices(params); // Используйте функцию для запроса с текущими параметрами
-    }, [params]); // Следите за изменениями параметров
-
-    const fetchOffices = (params) => {
-        api.get('/api/offices', { params })
+    const fetchOffices = (filterParams) => {
+        // Вызов функции для загрузки данных с использованием фильтров
+        api.get('/api/offices', { params: filterParams })
             .then((response) => {
                 const data = response.data;
+                // Сортировка данных по полю 'k' (от самого маленького к большему)
+                data.sort((a, b) => a.k - b.k);
                 setOfficesData(data);
-                console.log(data);
                 const newPlacemarks = data.map((office) => ({
                     key: office.id,
                     geometry: [office.latitude, office.longitude],
@@ -45,21 +44,7 @@ function YourComponent() {
             });
     };
 
-    const handleFilterChange = (filterData) => {
-        setParams((prevParams) => {
-            return {
-                ...prevParams,
-                longitude: filterData.longitude,
-                latitude: filterData.latitude,
-                hasRamp: filterData.hasRamp,
-                isIndividual: filterData.isIndividual,
-                hour: filterData.hour,
-            };
-        });
-    };
-
     useEffect(() => {
-        // Функция для получения текущего местоположения
         const getCurrentLocation = () => {
             if ("geolocation" in navigator) {
                 navigator.geolocation.getCurrentPosition(
@@ -74,8 +59,22 @@ function YourComponent() {
             }
         };
         getCurrentLocation();
-        return;
     }, []);
+
+    // Обработчик фильтрации
+    const handleFilterChange = (filterData) => {
+        // Обновите параметры фильтра и вызовите fetchOffices
+        setParams({
+            ...filterData,
+            latitude: currentLocation[0],
+            longitude: currentLocation[1],
+        });
+    };
+
+    // Обработчик нажатия кнопки "Применить фильтр"
+    const handleApplyFilter = () => {
+        fetchOffices(params);
+    };
 
     return (
         <div>
@@ -121,18 +120,16 @@ function YourComponent() {
                     <GeolocationControl options={{ float: 'right' }} />
                 </Map>
             </YMaps>
-            <FilterComponent
-                onFilterChange={(filterData) => {
-                    handleFilterChange({
-                        ...filterData,
-                        // Передача координат
-                        latitude: currentLocation[0],
-                        longitude: currentLocation[1],
-                    });
-                }}
-            />
+            <FilterComponent onFilterChange={handleFilterChange} />
+            <button
+                className="p-2 border bg-custom-blue text-white cursor-pointer hover:bg-blue-900"
+                onClick={handleApplyFilter}
+            >
+                Применить фильтр
+            </button>
+            <ScrollingList data={officesData} />
         </div>
     );
 }
 
-export default YourComponent;
+export default OfficeData;

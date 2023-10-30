@@ -67,3 +67,26 @@ body {
 .custom-heading {
     font-size: 24px;
 }
+
+.scrollable-list {
+    height: 300px;
+    /* Высота компонента */
+    overflow-y: auto;
+}
+
+.item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.item:hover {
+    background-color: #f0f0f0;
+}
+
+.selected {
+    background-color: #007bff;
+    color: #fff;
+}
