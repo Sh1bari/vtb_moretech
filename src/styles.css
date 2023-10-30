@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-custom-blue {
+    background-color: #002882;
+}
+
+.bg-custom-grey {
+    background-color: #C5C7C8;
+}
+
+.bg-custom-cian {
+    background-color: #00AAFF;
+}
+
+[class*="copyrights-pane"] {
+    display: none !important;
+}
+
+@font-face {
+    font-family: "VTBBold";
+    src: local("VTB"),
+        url("./fonts/VTBGroupUI-Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "VTBMedium";
+    src: local("VTB"),
+        url("./fonts/VTBGroupUI-Medium.ttf") format("truetype");
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "VTBRegular";
+    src: local("VTB"),
+        url("./fonts/VTBGroupUI-Regular.ttf") format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "VTBSemiBold";
+    src: local("VTB"),
+        url("./fonts/VTBGroupUI-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "VTBDemiBold";
+    src: local("VTB"),
+        url("./fonts/VTBGroupUI-DemiBold.ttf") format("truetype");
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "VTBLight";
+    src: local("VTB"),
+        url("./fonts/VTBGroupUI-Light.ttf") format("truetype");
+    font-weight: 300;
+}
+
+body {
+    font-family: 'VTBMedium', Arial, Arial Narrow, Roboto, SF Pro;
+}
+
+.custom-heading {
+    font-size: 24px;
+}
+
+.scrollable-list {
+    height: 300px;
+    /* Высота компонента */
+    overflow-y: auto;
+}
+
+.item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.item:hover {
+    background-color: #f0f0f0;
+}
+
+.selected {
+    background-color: #007bff;
+    color: #fff;
+}
