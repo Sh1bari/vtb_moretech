@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SubmitButton from '../SubmitButton/SubmitButton.jsx';
 
 function Filter() {
     const [radius, setRadius] = useState('');
@@ -9,26 +10,18 @@ function Filter() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const queryParams = new URLSearchParams({
+        const filterData = {
             radius,
             hasRamp,
             hour,
             isIndividual,
-        });
+        };
 
-        const url = `/api/offices?${queryParams.toString()}`;
-
-        // Выполняем GET-запрос
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                // Обрабатываем полученные данные
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error('Ошибка при выполнении GET-запроса', error);
-            });
-    };
+        // Вызываем SubmitButton и передаем ему данные фильтрации
+        return (
+            <SubmitButton filterData={filterData} />
+        );
+    }
 
     return (
         <form onSubmit={handleSubmit}>

@@ -1,0 +1,9 @@
+.map {
+    width: 100%;
+    display: flex;
+}
+
+.btns{
+    display: flex;
+    flex-direction: column;
+}

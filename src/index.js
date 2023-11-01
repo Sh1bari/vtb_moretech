@@ -10,12 +10,9 @@ import './fonts/VTBGroupUI-SemiBold.ttf';
 import './fonts/VTBGroupUI-Bold.ttf';
 import './fonts/VTBGroupUI-DemiBold.ttf';
 import './fonts/VTBGroupUI-Light.ttf';
-import store from './store/store';
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
+    <App />,
     document.getElementById('root')
 );
 

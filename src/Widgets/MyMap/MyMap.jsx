@@ -1,7 +1,8 @@
 import { React, useEffect, useState, useRef } from 'react'
 import { YMaps, Map, Placemark, ListBox, ListBoxItem } from '@pbe/react-yandex-maps';
-import ChooseRoute from "./ChooseRoute";
+import ChooseRoute from "../ChooseRoute/ChooseRoute";
 import './MyMap.css'
+import Filter from '../Filter/Filter.jsx';
 
 const MyMap = () => {
 
@@ -98,7 +99,10 @@ const MyMap = () => {
                     )}
                 </Map>
             </YMaps>
-            <ChooseRoute onRouteTypeChange={handleRouteTypeChange} />
+            <div className='btns'>
+                <ChooseRoute onRouteTypeChange={handleRouteTypeChange} />
+                <Filter />
+            </div>
         </div>
     )
 }

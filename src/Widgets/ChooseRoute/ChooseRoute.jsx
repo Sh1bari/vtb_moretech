@@ -1,4 +1,5 @@
 import React from 'react';
+import './ChooseRoute.css'
 
 function ChooseRoute({ onRouteTypeChange, setMultiRoute }) {
     const handleRouteClick = (routeType) => {
@@ -6,7 +7,7 @@ function ChooseRoute({ onRouteTypeChange, setMultiRoute }) {
     };
 
     return (
-        <div>
+        <div className='buttons'>
             <button onClick={() => handleRouteClick('auto')}>Автомобиль</button>
             <button onClick={() => handleRouteClick('masstransit')}>Автобусы</button>
             <button onClick={() => handleRouteClick('pedestrian')}>Пешеход</button>
