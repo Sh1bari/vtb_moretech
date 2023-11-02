@@ -1,31 +1,13 @@
-import { React, useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import { YMaps, Map, Placemark, ListBox, ListBoxItem } from '@pbe/react-yandex-maps';
-import ChooseRoute from "../ChooseRoute/ChooseRoute";
-import './MyMap.css'
-import Filter from '../Filter/Filter.jsx';
+import './MyMap.css';
+import Filter from '../../Filter/Filter';
+import useCurrentLocation from '../Location';
 
 const MyMap = () => {
-
-    const [currentLocation, setCurrentLocation] = useState(null);
-
-    useEffect(() => {
-        const getCurrentLocation = () => {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        setCurrentLocation([latitude, longitude]);
-                    },
-                    (error) => {
-                        console.error('Ошибка получения текущего местоположения:', error);
-                    }
-                );
-            }
-        };
-        getCurrentLocation();
-    }, []);
-
+    const currentLocation = useCurrentLocation();
     const map = useRef(null);
+
     const mapState = {
         center: [55.753600, 37.621184],
         zoom: 12
@@ -35,7 +17,7 @@ const MyMap = () => {
 
     const addRoute = (ymaps) => {
         const pointA = currentLocation;
-        const pointB = [];
+        const pointB = [55.753600, 37.621184];
 
         multiRoute.current = new ymaps.multiRouter.MultiRoute(
             {
@@ -100,7 +82,9 @@ const MyMap = () => {
                 </Map>
             </YMaps>
             <div className='btns'>
-                <ChooseRoute onRouteTypeChange={handleRouteTypeChange} />
+                <button onClick={() => handleRouteTypeChange('auto')}>Автомобиль</button>
+                <button onClick={() => handleRouteTypeChange('masstransit')}>Автобусы</button>
+                <button onClick={() => handleRouteTypeChange('pedestrian')}>Пешеход</button>
                 <Filter />
             </div>
         </div>

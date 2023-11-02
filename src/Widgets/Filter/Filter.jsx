@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import SubmitButton from '../SubmitButton/SubmitButton.jsx';
 
 function Filter() {
     const [radius, setRadius] = useState('');
@@ -16,11 +15,6 @@ function Filter() {
             hour,
             isIndividual,
         };
-
-        // Вызываем SubmitButton и передаем ему данные фильтрации
-        return (
-            <SubmitButton filterData={filterData} />
-        );
     }
 
     return (
